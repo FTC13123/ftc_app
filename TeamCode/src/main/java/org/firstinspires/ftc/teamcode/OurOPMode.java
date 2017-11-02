@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
 @Disabled//Disabled right now
-public class BasicOpMode_Iterative extends OpMode
+public class OurOPMode extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();

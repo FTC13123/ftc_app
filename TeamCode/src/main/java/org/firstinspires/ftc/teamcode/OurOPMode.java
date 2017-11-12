@@ -51,27 +51,19 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-<<<<<<< HEAD
 @TeleOp(name="OpMode #3", group="Iterative Opmode")
 //@Disabled//Disabled right now
-=======
-@TeleOp(name="OpMode #1", group="Iterative Opmode")
-//@Disabled
->>>>>>> 928e02434595c05e6a90d0319af287debb1c110d
 public class OurOPMode extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-<<<<<<< HEAD
     private Servo rightServo = null;
     private Servo leftServo = null;
     private DcMotor armMotor = null;
-=======
     private Servo rightArm = null;
     private Servo leftArm = null;
->>>>>>> 928e02434595c05e6a90d0319af287debb1c110d
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -85,19 +77,13 @@ public class OurOPMode extends OpMode
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-<<<<<<< HEAD
         leftServo = hardwareMap.get(Servo.class, "left_servo");
         rightServo = hardwareMap.get(Servo.class,"right_servo");
         armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
-=======
         rightArm = hardwareMap.get(Servo.class, "right_servo");
         leftArm = hardwareMap.get(Servo.class, "left_servo");
-
->>>>>>> 928e02434595c05e6a90d0319af287debb1c110d
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");

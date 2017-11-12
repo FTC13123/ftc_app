@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -50,14 +51,17 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
-@Disabled//Disabled right now
+@TeleOp(name="OpMode #3", group="Iterative Opmode")
+//@Disabled//Disabled right now
 public class OurOPMode extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
+    private Servo rightServo = null;
+    private Servo leftServo = null;
+    private DcMotor armMotor = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -71,7 +75,9 @@ public class OurOPMode extends OpMode
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-
+        leftServo = hardwareMap.get(Servo.class, "left_servo");
+        rightServo = hardwareMap.get(Servo.class,"right_servo");
+        armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -112,6 +118,9 @@ public class OurOPMode extends OpMode
         // - This uses basic math to combine motions and is easier to drive straight.
         double drive = -gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
+        double leftServoPos = gamepad2.left_trigger;
+        double rightServoPos = gamepad2.right_trigger;
+        double armHeight = -gamepad2.left_stick_y;
         leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
         rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
@@ -123,6 +132,10 @@ public class OurOPMode extends OpMode
         // Send calculated power to wheels
         leftDrive.setPower(leftPower);
         rightDrive.setPower(rightPower);
+        leftServo.setPosition(leftServoPos);
+        rightServo.setPosition(1 - rightServoPos);
+        armMotor.setPower(armHeight);
+
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());

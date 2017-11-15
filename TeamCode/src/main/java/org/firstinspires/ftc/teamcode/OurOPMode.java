@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="OpMode #3", group="Iterative Opmode")
+@TeleOp(name="OpMode #4", group="Iterative Opmode")
 //@Disabled//Disabled right now
 public class OurOPMode extends OpMode
 {
@@ -120,8 +120,7 @@ public class OurOPMode extends OpMode
         // - This uses basic math to combine motions and is easier to drive straight.
         double drive = -gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
-        double leftServoPos = gamepad2.left_trigger;
-        double rightServoPos = gamepad2.right_trigger;
+        double servoPos = gamepad2.right_trigger;
         double armHeight = -gamepad2.left_stick_y;
         leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
         rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
@@ -134,8 +133,8 @@ public class OurOPMode extends OpMode
         // Send calculated power to wheels
         leftDrive.setPower(leftPower);
         rightDrive.setPower(rightPower);
-        leftServo.setPosition(leftServoPos);
-        rightServo.setPosition(1 - rightServoPos);
+        leftServo.setPosition(servoPos);
+        rightServo.setPosition(1 - servoPos);
         armMotor.setPower(armHeight);
 
 

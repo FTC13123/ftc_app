@@ -51,9 +51,9 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="OpMode #10", group="Iterative Opmode")
-//@Disabled
-public class OurOPMode extends OpMode
+@TeleOp(name="OpMode2Trigger", group="Iterative Opmode")
+@Disabled
+public class OpMode2trigger extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -120,12 +120,13 @@ public class OurOPMode extends OpMode
         //The wheels
         double drive = -gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
-        leftPower    = (drive + turn)/2;
-        rightPower   = (drive - turn)/2;
+        leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+        rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
         //The arm
-        double height = -gamepad2.left_stick_y/2;
-        double pos = gamepad2.right_trigger;
+        double posr = gamepad2.right_trigger;
+        double height = -gamepad2.left_stick_y;
+        double posl = gamepad2.left_trigger;
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
         // leftPower  = -gamepad1.left_stick_y ;
@@ -134,11 +135,11 @@ public class OurOPMode extends OpMode
         // Send calculated power to wheels
         leftDrive.setPower(leftPower);
         rightDrive.setPower(rightPower);
-        rightServo.setPosition(1-pos);
-        leftServo.setPosition(pos);
+        rightServo.setPosition(1-posr);
+        leftServo.setPosition(posl);
         armMotor.setPower(height);
 
-        // Show  the elapsed game time and wheel power.
+        // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
     }

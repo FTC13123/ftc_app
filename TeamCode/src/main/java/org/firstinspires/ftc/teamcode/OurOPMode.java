@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
+import java.math.*;
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
@@ -118,11 +118,11 @@ public class OurOPMode extends OpMode
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
         //The wheels
-        double leftwheel = -gamepad1.left_stick_y;
-        double rightwheel  = -gamepad1.right_stick_y;
+        double leftwheel = Math.pow(-gamepad1.left_stick_y,3); //Gets the direct input from the analog stick and power of 3 to increase the sesitivity
+        double rightwheel  = Math.pow(-gamepad1.right_stick_y,3); //The same
 
         //The arm
-        double height = -gamepad2.left_stick_y/2;
+        double height = Math.pow(-gamepad2.left_stick_y, 3);
         double pos = gamepad2.right_trigger;
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.

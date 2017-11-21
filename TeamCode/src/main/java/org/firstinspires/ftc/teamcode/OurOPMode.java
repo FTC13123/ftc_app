@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="OpMode #10", group="Iterative Opmode")
+@TeleOp(name="OpMode #11", group="Iterative Opmode")
 //@Disabled
 public class OurOPMode extends OpMode
 {
@@ -118,10 +118,8 @@ public class OurOPMode extends OpMode
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
         //The wheels
-        double drive = -gamepad1.left_stick_y;
-        double turn  =  gamepad1.right_stick_x;
-        leftPower    = (drive + turn)/2;
-        rightPower   = (drive - turn)/2;
+        double leftwheel = -gamepad1.left_stick_y;
+        double rightwheel  = -gamepad1.right_stick_y;
 
         //The arm
         double height = -gamepad2.left_stick_y/2;
@@ -132,15 +130,15 @@ public class OurOPMode extends OpMode
         // rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
-        leftDrive.setPower(leftPower);
-        rightDrive.setPower(rightPower);
+        leftDrive.setPower(leftwheel);
+        rightDrive.setPower(rightwheel);
         rightServo.setPosition(1-pos);
         leftServo.setPosition(pos);
         armMotor.setPower(height);
 
         // Show  the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftwheel, rightwheel);
     }
 
     /*

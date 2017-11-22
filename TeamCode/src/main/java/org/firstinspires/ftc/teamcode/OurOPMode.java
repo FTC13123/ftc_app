@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import java.math.*;
+
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
@@ -51,7 +52,7 @@ import java.math.*;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="OpMode #11", group="Iterative Opmode")
+@TeleOp(name="OpMode #13", group="Iterative Opmode")
 //@Disabled
 public class OurOPMode extends OpMode
 {
@@ -62,6 +63,7 @@ public class OurOPMode extends OpMode
     private Servo leftServo = null;
     private Servo rightServo = null;
     private DcMotor armMotor = null;
+    private double pos=0;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -87,6 +89,7 @@ public class OurOPMode extends OpMode
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
+
 
     /*
      * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
@@ -123,7 +126,12 @@ public class OurOPMode extends OpMode
 
         //The arm
         double height = Math.pow(-gamepad2.left_stick_y, 3);
-        double pos = gamepad2.right_trigger;
+        if (pos + (Math.pow(gamepad2.right_trigger, 3)*0.1) <= 1) {
+            pos += (Math.pow(gamepad2.right_trigger, 3)*0.1);
+        }
+        if (pos - (Math.pow(gamepad2.left_trigger, 3)*0.1) >= 0) {
+            pos -= (Math.pow(gamepad2.left_trigger, 3)*0.1);
+        }
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
         // leftPower  = -gamepad1.left_stick_y ;

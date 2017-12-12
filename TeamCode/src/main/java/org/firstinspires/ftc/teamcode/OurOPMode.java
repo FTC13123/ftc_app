@@ -77,14 +77,16 @@ public class OurOPMode extends OpMode
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        leftServo  = hardwareMap.get(Servo.class, "left_servo");
-        rightServo = hardwareMap.get(Servo.class, "right_servo");
-        armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
+        //leftServo  = hardwareMap.get(Servo.class, "left_servo");
+        //rightServo = hardwareMap.get(Servo.class, "right_servo");
+        //armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -140,9 +142,9 @@ public class OurOPMode extends OpMode
         // Send calculated power to wheels
         leftDrive.setPower(leftwheel);
         rightDrive.setPower(rightwheel);
-        rightServo.setPosition(1-pos);
-        leftServo.setPosition(pos);
-        armMotor.setPower(height);
+        // rightServo.setPosition(1-pos);
+        //leftServo.setPosition(pos);
+        //armMotor.setPower(height);
 
         // Show  the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());

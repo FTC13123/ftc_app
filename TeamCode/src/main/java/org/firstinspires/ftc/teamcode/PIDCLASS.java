@@ -36,6 +36,7 @@ public class PIDCLASS {
     Set<Axis> de;
     public double angaleturn (double angle,DcMotor rightMotor, DcMotor leftMotor,Gyroscope gyroscope){//notice that angle is in radians
         de = gyroscope.getAngularVelocityAxes();
+        double agle =0.0;
         return agle;
     }
     public double movewheel (double position) {

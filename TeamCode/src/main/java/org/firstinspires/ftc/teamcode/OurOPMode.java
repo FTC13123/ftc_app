@@ -52,7 +52,7 @@ import java.math.*;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="OpMode #13", group="Iterative Opmode")
+@TeleOp(name="TeleOp", group="Iterative Opmode")
 //@Disabled
 public class OurOPMode extends OpMode
 {
@@ -77,9 +77,9 @@ public class OurOPMode extends OpMode
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        //leftServo  = hardwareMap.get(Servo.class, "left_servo");
-        //rightServo = hardwareMap.get(Servo.class, "right_servo");
-        //armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
+        leftServo  = hardwareMap.get(Servo.class, "left_servo");
+        rightServo = hardwareMap.get(Servo.class, "right_servo");
+        armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -87,6 +87,7 @@ public class OurOPMode extends OpMode
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
         leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -128,7 +129,7 @@ public class OurOPMode extends OpMode
         double rightwheel  = Math.pow(-gamepad1.right_stick_y,3); //The same
 
         //The arm
-        double height = Math.pow(-gamepad2.left_stick_y, 3);
+        double height = (Math.pow (Math.abs(-gamepad2.left_stick_y),0.333))*Math.signum(-gamepad2.left_stick_y) ;
         if (pos + (Math.pow(gamepad2.right_trigger, 3)*0.1) <= 1) {
             pos += (Math.pow(gamepad2.right_trigger, 3)*0.1);
         }
@@ -137,15 +138,15 @@ public class OurOPMode extends OpMode
         }
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
-        // leftPower  = -gamepad1.left_stick_y ;
-        // rightPower = -gamepad1.right_stick_y ;
+         leftPower  = -gamepad1.left_stick_y ;
+         rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
         leftDrive.setPower(leftwheel);
         rightDrive.setPower(rightwheel);
-        // rightServo.setPosition(1-pos);
-        //leftServo.setPosition(pos);
-        //armMotor.setPower(height);
+        rightServo.setPosition(1-pos);
+        leftServo.setPosition(pos);
+        armMotor.setPower(height);
 
         // Show  the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());

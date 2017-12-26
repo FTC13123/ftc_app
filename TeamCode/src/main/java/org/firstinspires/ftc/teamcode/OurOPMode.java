@@ -125,32 +125,37 @@ public class OurOPMode extends OpMode
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
         //The wheels
-        double leftwheel = Math.pow(-gamepad1.left_stick_y,3); //Gets the direct input from the analog stick and power of 3 to increase the sesitivity
-        double rightwheel  = Math.pow(-gamepad1.right_stick_y,3); //The same
-
+        double drive = -gamepad1.left_stick_y;
+        double turn  =  gamepad1.right_stick_x;
+        leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+        rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+        double righttrigger = gamepad2.right_trigger;
+        double lefttrigger = gamepad2.left_trigger;
         //The arm
         double height = (Math.pow (Math.abs(-gamepad2.left_stick_y),0.333))*Math.signum(-gamepad2.left_stick_y) ;
+        /*
         if (pos + (Math.pow(gamepad2.right_trigger, 3)*0.1) <= 1) {
             pos += (Math.pow(gamepad2.right_trigger, 3)*0.1);
         }
         if (pos - (Math.pow(gamepad2.left_trigger, 3)*0.1) >= 0) {
             pos -= (Math.pow(gamepad2.left_trigger, 3)*0.1);
         }
+        */
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
          leftPower  = -gamepad1.left_stick_y ;
          rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
-        leftDrive.setPower(leftwheel);
-        rightDrive.setPower(rightwheel);
-        rightServo.setPosition(1-pos);
-        leftServo.setPosition(pos);
+        leftDrive.setPower(leftPower);
+        rightDrive.setPower(rightPower);
+        rightServo.setPosition(1-righttrigger);
+        leftServo.setPosition(lefttrigger);
         armMotor.setPower(height);
 
         // Show  the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftwheel, rightwheel);
+        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
     }
 
     /*

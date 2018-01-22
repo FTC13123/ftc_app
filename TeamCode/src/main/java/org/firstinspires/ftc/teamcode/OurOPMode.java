@@ -63,7 +63,8 @@ public class OurOPMode extends OpMode
     private Servo leftServo = null;
     private Servo rightServo = null;
     private DcMotor armMotor = null;
-    private double pos=0;
+    private double pos = 0;
+    double armPosition = 0;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -144,7 +145,12 @@ public class OurOPMode extends OpMode
         double righttrigger = gamepad2.right_trigger;
         double lefttrigger = gamepad2.left_trigger;
         //The arm
-        double height = (Math.pow (Math.abs(-gamepad2.left_stick_y),0.333))*Math.signum(-gamepad2.left_stick_y) ;
+        double armPower = (Math.pow (Math.abs(-gamepad2.left_stick_y),0.333))*Math.signum(-gamepad2.left_stick_y) ;
+        armPosition += armPower;
+
+
+
+
         /*
         if (pos + (Math.pow(gamepad2.right_trigger, 3)*0.1) <= 1) {
             pos += (Math.pow(gamepad2.right_trigger, 3)*0.1);
@@ -153,19 +159,19 @@ public class OurOPMode extends OpMode
             pos -= (Math.pow(gamepad2.left_trigger, 3)*0.1);
         }
         */
-        // Tank Mode uses one stick to control each wheel.
-        // - This requires no math, but it is hard to drive forward slowly and keep straight.
 
         // Send calculated power to wheels
         leftDrive.setPower(leftPower);
         rightDrive.setPower(rightPower);
         rightServo.setPosition(1-righttrigger);
         leftServo.setPosition(lefttrigger);
-        armMotor.setPower(height);
+        armMotor.setPower(armPower);
 
         // Show  the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+
+        telemetry.addData("arm_position", "position: " + armPosition);
     }
 
     /*

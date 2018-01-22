@@ -29,17 +29,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Color;
-import android.provider.CalendarContract;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -57,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @Autonomous(name="Autonomus", group="Linear Opmode")
 //@Disabled
-public class Autonomus extends LinearOpMode {
+public class Autonomus_blue_2 extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -103,8 +97,8 @@ public class Autonomus extends LinearOpMode {
             }
             if(color_sensor.red()>color_sensor.blue())
             {
-                leftDrive.setPower(1);
-                rightDrive.setPower(-1);
+                leftDrive.setPower(-1);
+                rightDrive.setPower(1);
                 try{
                     Thread.sleep((long)(1000));
                 } catch(Exception e) {
@@ -118,10 +112,18 @@ public class Autonomus extends LinearOpMode {
 
                 }
 
-                leftDrive.setPower(-1);
-                rightDrive.setPower(1);
+                leftDrive.setPower(1);
+                rightDrive.setPower(-1);
                 try{
                     Thread.sleep((long)(1000));
+                } catch(Exception e) {
+
+                }
+
+                leftDrive.setPower(1);
+                rightDrive.setPower(1);
+                try{
+                    Thread.sleep((long)(2500));
                 } catch(Exception e) {
 
                 }

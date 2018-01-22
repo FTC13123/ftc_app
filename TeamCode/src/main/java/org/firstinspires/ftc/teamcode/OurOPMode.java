@@ -60,31 +60,32 @@ public class OurOPMode extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-    private Servo leftServo = null;
-    private Servo rightServo = null;
+   // private Servo leftServo = null;
+    //private Servo rightServo = null;
     private DcMotor armMotor = null;
     private double pos = 0;
-    double armPosition = 0;
-    double mifrak = 0;
-    double yad = 0;
+    private double armPosition = 0;
+    private Servo mifrak = null;
+    private Servo yad_1 = null;
+    private Servo yad_2 = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
-        telemetry.addData("Status", "Initialized");
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         leftDrive   = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive  = hardwareMap.get(DcMotor.class, "right_drive");
-        leftServo   = hardwareMap.get(Servo.class, "left_servo");
-        rightServo  = hardwareMap.get(Servo.class, "right_servo");
+        //leftServo   = hardwareMap.get(Servo.class, "left_servo");
+        //rightServo  = hardwareMap.get(Servo.class, "right_servo");
         armMotor    = hardwareMap.get(DcMotor.class, "arm_motor");
-        mifrakMotor = hardWareMap.get(DcMotor.class, "");
-        yadMotor    = hardWareMap.get(DcMotor.class, "");
+        mifrak = hardwareMap.get(Servo.class, "mifrak");
+        yad_1    = hardwareMap.get(Servo.class, "yad_1");
+        yad_2    = hardwareMap.get(Servo.class, "yad_2");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -93,11 +94,10 @@ public class OurOPMode extends OpMode
         leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        mifrakMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        yadMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
+        telemetry.update();
     }
 
 
@@ -133,29 +133,33 @@ public class OurOPMode extends OpMode
         // - This uses basic math to combine motions and is easier to drive straight.
         //The wheels
         double drive = -gamepad1.left_stick_y;
-        double turn  =  gamepad1.right_stick_x;
+        double turn  = gamepad1.right_stick_x;
         leftPower    = drive + turn;
         if (leftPower >1) {
-            leftPower = 1;
+            leftPower = -1;
         }
         else if (leftPower <-1) {
-            leftPower = -1;
+            leftPower = 1;
         }
         rightPower   = drive - turn;
         if (rightPower > 1) {
-            rightPower = 1;
+            rightPower = -1;
         }
         else if (rightPower < -1){
-            rightPower = -1;
+            rightPower = 1;
         }
         double rightTrigger = gamepad2.right_trigger;
         double leftTrigger = gamepad2.left_trigger;
         //The arm
-        double armPower = (Math.pow (Math.abs(-gamepad2.left_stick_y),0.333))*Math.signum(-gamepad2.left_stick_y) ;
-        armPosition += armPower;
+        //if(armPosition > || armPosition < ) {
+            double armPower = (Math.pow(Math.abs(-gamepad2.left_stick_y), 0.333)) * Math.signum(-gamepad2.left_stick_y);
+            armPosition += armPower;
+        //}
 
-        double mifrakPower = (Math.pow (Math.abs(rightTrigger),0.333))*Math.signum(rightTrigger) ;
-        mifrak += mifrakPower; // we love you Meir
+        double yad_1_pos = rightTrigger;
+        double yad_2_pos = 1-rightTrigger;
+
+        double mifrak_pos = (gamepad2.right_stick_y+1)/2;
 
 
         /*
@@ -170,15 +174,18 @@ public class OurOPMode extends OpMode
         // Send calculated power to wheels
         leftDrive.setPower(leftPower);
         rightDrive.setPower(rightPower);
-        rightServo.setPosition(1-righttrigger);
-        leftServo.setPosition(lefttrigger);
+        //rightServo.setPosition(1-rightTrigger);
+        //leftServo.setPosition(leftTrigger);
         armMotor.setPower(armPower);
-        mifrakMotor.setPower(mifakPower);
+        yad_1.setPosition(yad_1_pos);
+        yad_2.setPosition(yad_2_pos);
+        mifrak.setPosition(mifrak_pos);
 
         // Show  the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
         telemetry.addData("arm_position", "position: " + armPosition);
+        telemetry.update();
     }
 
     /*

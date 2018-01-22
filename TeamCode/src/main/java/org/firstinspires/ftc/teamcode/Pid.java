@@ -36,7 +36,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-import com.github.pmtischler.control.Pid;
 
 
 /**
@@ -50,7 +49,7 @@ import com.github.pmtischler.control.Pid;
  *
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
+
 @PID(name="Pid", group="Linear Opmode")
 @Disabled
 public class Pid extends LinearOpMode {
@@ -86,3 +85,4 @@ public class Pid extends LinearOpMode {
         right = motorPower.getY();
     }
 }
+*/

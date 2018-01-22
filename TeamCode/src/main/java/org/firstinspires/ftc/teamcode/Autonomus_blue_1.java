@@ -27,14 +27,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -50,15 +49,16 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Auotonomus", group="Linear Opmode")
+@Autonomous(name="Autonomus", group="Linear Opmode")
 //@Disabled
-public class BasicOpMode_Linear extends LinearOpMode {
+public class Autonomus_blue_1 extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-
+    private DcMotor jewel = null;
+    private ColorSensor color_sensor;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -69,11 +69,17 @@ public class BasicOpMode_Linear extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        jewel = hardwareMap.get(DcMotor.class, "jewel");
+        color_sensor = hardwareMap.colorSensor.get("color");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        jewel.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        jewel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -81,8 +87,74 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            int straight_1=2500;
+
+            jewel.setPower(0.3);
+            try{
+                Thread.sleep((long)(1000));
+            } catch(Exception e) {
+
+            }
+            if(color_sensor.red()>color_sensor.blue())
+            {
+                leftDrive.setPower(-1);
+                rightDrive.setPower(1);
+                try{
+                    Thread.sleep((long)(1000));
+                } catch(Exception e) {
+
+                }
+
+                jewel.setPower(-0.3);
+                try{
+                    Thread.sleep((long)(1000));
+                } catch(Exception e) {
+
+                }
+
+                leftDrive.setPower(1);
+                rightDrive.setPower(-1);
+                try{
+                    Thread.sleep((long)(1500));
+                } catch(Exception e) {
+
+                }
+
+                leftDrive.setPower(1);
+                rightDrive.setPower(1);
+                try{
+                    Thread.sleep((long)(2500));
+                } catch(Exception e) {
+
+                }
+            }
+
+
+
+            // devide by 15.25 and put it in miliseconds
+/*
+            leftDrive.setPower(0.8);
+            rightDrive.setPower(0.8);
+            try{
+                Thread.sleep((long)(straight_1));
+            } catch(Exception e) {
+
+            }
+
+            leftDrive.setPower(0);
+            rightDrive.setPower(0);
+            try{
+                Thread.sleep(1000000);
+            } catch(Exception e) {
+
+            }
+
+
+
+*/
+            // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)");
             telemetry.update();
         }
     }

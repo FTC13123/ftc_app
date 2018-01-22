@@ -84,8 +84,8 @@ public class Autonomus extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            int straight_1=0;
-            int straight_2=0;
+            int straight_1=2500;
+
             // devide by 15.25 and put it in miliseconds
 
             leftDrive.setPower(0.8);
@@ -96,21 +96,15 @@ public class Autonomus extends LinearOpMode {
 
             }
 
-            leftDrive.setPower(0.8);
+            leftDrive.setPower(0);
             rightDrive.setPower(0);
             try{
-                Thread.sleep(1901);
+                Thread.sleep(1000000);
             } catch(Exception e) {
 
             }
 
-            leftDrive.setPower(0.8);
-            rightDrive.setPower(0.8);
-            try{
-                Thread.sleep((long)(straight_2));
-            } catch(Exception e) {
 
-            }
 
 
             // Show the elapsed game time and wheel power.

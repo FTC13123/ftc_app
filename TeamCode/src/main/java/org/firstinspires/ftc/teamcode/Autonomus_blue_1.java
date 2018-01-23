@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Autonomus", group="Linear Opmode")
+@Autonomous(name="Autonomus_blue_1", group="Linear Opmode")
 //@Disabled
 public class Autonomus_blue_1 extends LinearOpMode {
 
@@ -100,7 +100,7 @@ public class Autonomus_blue_1 extends LinearOpMode {
                 leftDrive.setPower(-1);
                 rightDrive.setPower(1);
                 try{
-                    Thread.sleep((long)(1000));
+                    Thread.sleep((long)(500));
                 } catch(Exception e) {
 
                 }
@@ -114,6 +114,38 @@ public class Autonomus_blue_1 extends LinearOpMode {
 
                 leftDrive.setPower(1);
                 rightDrive.setPower(-1);
+                try{
+                    Thread.sleep((long)(1500));
+                } catch(Exception e) {
+
+                }
+
+                leftDrive.setPower(1);
+                rightDrive.setPower(1);
+                try{
+                    Thread.sleep((long)(2500));
+                } catch(Exception e) {
+
+                }
+            }
+            else{
+                leftDrive.setPower(1);
+                rightDrive.setPower(-1);
+                try{
+                    Thread.sleep((long)(500));
+                } catch(Exception e) {
+
+                }
+
+                jewel.setPower(-0.3);
+                try{
+                    Thread.sleep((long)(1000));
+                } catch(Exception e) {
+
+                }
+
+                leftDrive.setPower(-1);
+                rightDrive.setPower(1);
                 try{
                     Thread.sleep((long)(1500));
                 } catch(Exception e) {

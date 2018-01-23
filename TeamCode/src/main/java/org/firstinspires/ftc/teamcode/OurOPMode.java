@@ -52,7 +52,7 @@ import java.math.*;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TeleOp", group="Iterative Opmode")
+@TeleOp(name="OPmode", group="Iterative Opmode")
 //@Disabled
 public class OurOPMode extends OpMode
 {
@@ -60,12 +60,10 @@ public class OurOPMode extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-   // private Servo leftServo = null;
-    //private Servo rightServo = null;
     private DcMotor armMotor = null;
     private double pos = 0;
-    private double armPosition = 0;
-    private Servo mifrak = null;
+    private Servo mifrak_1 = null;
+    private Servo mifrak_2 = null;
     private Servo yad_1 = null;
     private Servo yad_2 = null;
 
@@ -80,10 +78,9 @@ public class OurOPMode extends OpMode
         // step (using the FTC Robot Controller app on the phone).
         leftDrive   = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive  = hardwareMap.get(DcMotor.class, "right_drive");
-        //leftServo   = hardwareMap.get(Servo.class, "left_servo");
-        //rightServo  = hardwareMap.get(Servo.class, "right_servo");
         armMotor    = hardwareMap.get(DcMotor.class, "arm_motor");
-        mifrak = hardwareMap.get(Servo.class, "mifrak");
+        mifrak_1 = hardwareMap.get(Servo.class, "mifrak_1");
+        mifrak_2 = hardwareMap.get(Servo.class, "mifrak_2");
         yad_1    = hardwareMap.get(Servo.class, "yad_1");
         yad_2    = hardwareMap.get(Servo.class, "yad_2");
 
@@ -133,33 +130,31 @@ public class OurOPMode extends OpMode
         // - This uses basic math to combine motions and is easier to drive straight.
         //The wheels
         double drive = -gamepad1.left_stick_y;
-        double turn  = gamepad1.right_stick_x;
+        double turn  = -gamepad1.right_stick_x;
         leftPower    = drive + turn;
         if (leftPower >1) {
-            leftPower = -1;
+            leftPower = 1;
         }
         else if (leftPower <-1) {
-            leftPower = 1;
+            leftPower = -1;
         }
         rightPower   = drive - turn;
         if (rightPower > 1) {
-            rightPower = -1;
-        }
-        else if (rightPower < -1){
             rightPower = 1;
         }
+        else if (rightPower < -1){
+            rightPower = -1;
+        }
         double rightTrigger = gamepad2.right_trigger;
-        double leftTrigger = gamepad2.left_trigger;
+        //double leftTrigger = gamepad2.left_trigger;
         //The arm
-        //if(armPosition > || armPosition < ) {
-            double armPower = (Math.pow(Math.abs(-gamepad2.left_stick_y), 0.333)) * Math.signum(-gamepad2.left_stick_y);
-            armPosition += armPower;
-        //}
+        double armPower = Math.pow(Math.abs(-gamepad2.left_stick_y), 0.25);
 
         double yad_1_pos = rightTrigger;
         double yad_2_pos = 1-rightTrigger;
 
-        double mifrak_pos = (gamepad2.right_stick_y+1)/2;
+        double mifrak_1_pos = ((gamepad2.right_stick_y+1)/2);
+        double mifrak_2_pos = ((1-(gamepad2.right_stick_y+1)/2));
 
 
         /*
@@ -172,19 +167,16 @@ public class OurOPMode extends OpMode
         */
 
         // Send calculated power to wheels
-        leftDrive.setPower(leftPower);
-        rightDrive.setPower(rightPower);
-        //rightServo.setPosition(1-rightTrigger);
-        //leftServo.setPosition(leftTrigger);
+        leftDrive.setPower(-leftPower);
+        rightDrive.setPower(-rightPower);
         armMotor.setPower(armPower);
         yad_1.setPosition(yad_1_pos);
         yad_2.setPosition(yad_2_pos);
-        mifrak.setPosition(mifrak_pos);
-
+        mifrak_1.setPosition(mifrak_1_pos/2);
+        mifrak_2.setPosition(mifrak_2_pos/2);
         // Show  the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-        telemetry.addData("arm_position", "position: " + armPosition);
         telemetry.update();
     }
 

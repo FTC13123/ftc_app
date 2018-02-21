@@ -154,7 +154,7 @@ public class OurOPMode extends OpMode
         double yad_2_pos = 1-rightTrigger;
 
         double mifrak_1_pos = ((gamepad2.right_stick_y+1)/2);
-        double mifrak_2_pos = ((1-(gamepad2.right_stick_y+1)/2));
+        double mifrak_2_pos = (((1-(gamepad2.right_stick_y+1))/2));
 
 
         /*
@@ -177,6 +177,8 @@ public class OurOPMode extends OpMode
         // Show  the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Mifrak_1: " + mifrak_1_pos);
+        telemetry.addData("Mifrak_2: " + mifrak_2_pos);
         telemetry.update();
     }
 

@@ -62,6 +62,7 @@ public class OurOPMode extends OpMode
     private DcMotor rightDrive = null;
     private DcMotor armMotor = null;
     private double pos = 0;
+    private boolean started = false;
     private Servo mifrak_1 = null;
     private Servo mifrak_2 = null;
     private Servo yad_1 = null;
@@ -97,7 +98,7 @@ public class OurOPMode extends OpMode
         telemetry.update();
     }
 
-
+//
     /*
      * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
      */
@@ -126,6 +127,12 @@ public class OurOPMode extends OpMode
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
 
+        double rightTrigger = gamepad2.right_trigger;
+        if(gamepad2.right_stick_y!=0||rightTrigger!=0){
+            started=true;
+        }
+
+
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
         //The wheels
@@ -145,17 +152,34 @@ public class OurOPMode extends OpMode
         else if (rightPower < -1){
             rightPower = -1;
         }
-        double rightTrigger = gamepad2.right_trigger;
-        //double leftTrigger = gamepad2.left_trigger;
+
         //The arm
-        double armPower = Math.pow(Math.abs(-gamepad2.left_stick_y), 0.25);
+        double armPower = gamepad2.left_stick_y * 0.3;
 
-        double yad_1_pos = rightTrigger;
-        double yad_2_pos = 1-rightTrigger;
 
-        double mifrak_1_pos = ((gamepad2.right_stick_y+1)/2);
-        double mifrak_2_pos = (((1-(gamepad2.right_stick_y+1))/2));
+        double yad_1_pos = 0.3;
+        double yad_2_pos = 0.7;
 
+        double mifrak_1_pos = 0;
+        double mifrak_2_pos = 0.95;
+
+        if(started==true) {
+            yad_1_pos = rightTrigger;
+            yad_2_pos = 1 - rightTrigger;
+
+            if (yad_1_pos < 0.3)
+                yad_1_pos = 0.3;
+            if (yad_2_pos > 0.7)
+                yad_2_pos = 0.7;
+
+            mifrak_1_pos = ((gamepad2.right_stick_y + 1) / 2);
+            mifrak_2_pos = (1 - ((gamepad2.right_stick_y + 1) / 2)) - 0.05;
+
+            if (mifrak_1_pos > 0.95)
+                mifrak_1_pos = 0.95;
+            if (mifrak_2_pos < 0)
+                mifrak_2_pos = 0;
+        }
 
         /*
         if (pos + (Math.pow(gamepad2.right_trigger, 3)*0.1) <= 1) {
@@ -172,13 +196,11 @@ public class OurOPMode extends OpMode
         armMotor.setPower(armPower);
         yad_1.setPosition(yad_1_pos);
         yad_2.setPosition(yad_2_pos);
-        mifrak_1.setPosition(mifrak_1_pos/2);
-        mifrak_2.setPosition(mifrak_2_pos/2);
+        mifrak_1.setPosition(mifrak_1_pos);
+        mifrak_2.setPosition(mifrak_2_pos);
         // Show  the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-        telemetry.addData("Mifrak_1: " + mifrak_1_pos);
-        telemetry.addData("Mifrak_2: " + mifrak_2_pos);
         telemetry.update();
     }
 

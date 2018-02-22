@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -59,6 +60,8 @@ public class Autonomus_blue_1 extends LinearOpMode {
     private DcMotor rightDrive = null;
     private DcMotor jewel = null;
     private ColorSensor color_sensor;
+    private Servo yad_1 = null;
+    private Servo yad_2 = null;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -87,35 +90,41 @@ public class Autonomus_blue_1 extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            int straight_1=2500;
-
-            jewel.setPower(0.3);
+            yad_1 = hardwareMap.get(Servo.class, "yad_1");
+            yad_2 = hardwareMap.get(Servo.class, "yad_2");
+            yad_1.setPosition(0.6);
+            yad_2.setPosition(0.4);
+            jewel.setPower(-0.1);
             try{
-                Thread.sleep((long)(1000));
+                Thread.sleep((long)(800));
             } catch(Exception e) {
 
             }
+            jewel.setPower(0);
             if(color_sensor.red()>color_sensor.blue())
             {
-                leftDrive.setPower(-1);
-                rightDrive.setPower(1);
-                try{
-                    Thread.sleep((long)(500));
-                } catch(Exception e) {
-
-                }
-
-                jewel.setPower(-0.3);
-                try{
-                    Thread.sleep((long)(1000));
-                } catch(Exception e) {
-
-                }
-
                 leftDrive.setPower(1);
                 rightDrive.setPower(-1);
                 try{
-                    Thread.sleep((long)(1500));
+                    Thread.sleep((long)(300));
+                } catch(Exception e) {
+
+                }
+                leftDrive.setPower(0);
+                rightDrive.setPower(0);
+
+                jewel.setPower(0.1);
+                try{
+                    Thread.sleep((long)(800));
+                } catch(Exception e) {
+
+                }
+                jewel.setPower(0);
+
+                leftDrive.setPower(-1);
+                rightDrive.setPower(1);
+                try{
+                    Thread.sleep((long)(800));
                 } catch(Exception e) {
 
                 }
@@ -129,25 +138,28 @@ public class Autonomus_blue_1 extends LinearOpMode {
                 }
             }
             else{
-                leftDrive.setPower(1);
-                rightDrive.setPower(-1);
+                leftDrive.setPower(-1);
+                rightDrive.setPower(1);
                 try{
-                    Thread.sleep((long)(500));
+                    Thread.sleep((long)(300));
                 } catch(Exception e) {
 
                 }
+                leftDrive.setPower(0);
+                rightDrive.setPower(0);
 
-                jewel.setPower(-0.3);
+                jewel.setPower(0.1);
                 try{
-                    Thread.sleep((long)(1000));
+                    Thread.sleep((long)(800));
                 } catch(Exception e) {
 
                 }
+                jewel.setPower(0);
 
                 leftDrive.setPower(-1);
                 rightDrive.setPower(1);
                 try{
-                    Thread.sleep((long)(1500));
+                    Thread.sleep((long)(800));
                 } catch(Exception e) {
 
                 }

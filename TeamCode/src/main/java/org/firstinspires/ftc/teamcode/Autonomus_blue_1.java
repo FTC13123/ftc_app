@@ -92,8 +92,8 @@ public class Autonomus_blue_1 extends LinearOpMode {
         while (opModeIsActive()) {
             yad_1 = hardwareMap.get(Servo.class, "yad_1");
             yad_2 = hardwareMap.get(Servo.class, "yad_2");
-            yad_1.setPosition(0.6);
-            yad_2.setPosition(0.4);
+            yad_1.setPosition(0.4);
+            yad_2.setPosition(0.6);
             jewel.setPower(-0.1);
             try{
                 Thread.sleep((long)(800));
@@ -103,8 +103,8 @@ public class Autonomus_blue_1 extends LinearOpMode {
             jewel.setPower(0);
             if(color_sensor.red()>color_sensor.blue())
             {
-                leftDrive.setPower(1);
-                rightDrive.setPower(-1);
+                leftDrive.setPower(0.8);
+                rightDrive.setPower(-0.8);
                 try{
                     Thread.sleep((long)(300));
                 } catch(Exception e) {
@@ -115,14 +115,14 @@ public class Autonomus_blue_1 extends LinearOpMode {
 
                 jewel.setPower(0.1);
                 try{
-                    Thread.sleep((long)(800));
+                    Thread.sleep((long)(1600));
                 } catch(Exception e) {
 
                 }
                 jewel.setPower(0);
 
-                leftDrive.setPower(-1);
-                rightDrive.setPower(1);
+                leftDrive.setPower(1);
+                rightDrive.setPower(-1);
                 try{
                     Thread.sleep((long)(800));
                 } catch(Exception e) {
@@ -138,8 +138,8 @@ public class Autonomus_blue_1 extends LinearOpMode {
                 }
             }
             else{
-                leftDrive.setPower(-1);
-                rightDrive.setPower(1);
+                leftDrive.setPower(-0.8);
+                rightDrive.setPower(0.8);
                 try{
                     Thread.sleep((long)(300));
                 } catch(Exception e) {
@@ -156,10 +156,10 @@ public class Autonomus_blue_1 extends LinearOpMode {
                 }
                 jewel.setPower(0);
 
-                leftDrive.setPower(-1);
-                rightDrive.setPower(1);
+                leftDrive.setPower(1);
+                rightDrive.setPower(-1);
                 try{
-                    Thread.sleep((long)(800));
+                    Thread.sleep((long)(400));
                 } catch(Exception e) {
 
                 }
